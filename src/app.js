@@ -24,6 +24,11 @@ app.use(express.static("public"))
 app.use(cookieParser())
 
 
+//routes import
+import hireRouter from './routes/hiringform.routes.js'
+
+//routes declaration
+app.use("/api/v1/hire", hireRouter)
 
 
 export {app}
