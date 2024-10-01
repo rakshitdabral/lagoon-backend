@@ -1,6 +1,13 @@
 import mongoose, { Schema } from "mongoose";
+import { v4 as uuidv4 } from 'uuid';
 
 const hiringformSchema = new Schema({
+  uniqueKey: {
+    type: String,
+    required: true,
+    unique: true,
+    default: () => uuidv4() 
+  },
   title: {
     type : String,
     required : true,
