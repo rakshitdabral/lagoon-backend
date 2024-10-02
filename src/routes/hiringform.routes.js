@@ -3,7 +3,11 @@ import {
   createHiringForm,
   deleteHiringForm,
   getAllHiringForms,
+  getDraftHiringForms,
   getHiringFormById,
+  getTrashedHiringForms,
+  publishHiringForm,
+  trashHiringForm,
   updateHiringForm,
 } from './../controllers/hiringform.controller.js';
 
@@ -11,6 +15,19 @@ const router = Router()
 
 //create hiring form
 router.post('/hiring-forms', createHiringForm);
+
+//publish hiring form
+router.put('/hiring-forms/:id/publish' , publishHiringForm)
+
+//trash hiring form
+router.put('/hiring-forms/:id/trash' , trashHiringForm)
+
+//get draft hiring form
+router.get('/hiring-forms/draft',getDraftHiringForms)
+
+//get trash hiring form
+router.get('/hiring-forms/trash',getTrashedHiringForms)
+
 
 // Retrieve all hiring forms
 router.get('/hiring-forms', getAllHiringForms);

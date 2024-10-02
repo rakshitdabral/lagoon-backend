@@ -6,7 +6,12 @@ const hiringformSchema = new Schema({
     type: String,
     required: true,
     unique: true,
-    default: () => uuidv4() 
+    default: () => uuidv4()
+  },
+  status: {
+    type: String,
+    enum: ['draft', 'published', 'trashed'],
+    default: 'draft',
   },
   title: {
     type : String,
