@@ -76,18 +76,35 @@ export const getHiringFormById = async (req, res) => {
 export const updateHiringForm = async (req, res) => {
   try {
     const id = req.params.id;
-    const { title, fields } = req.body;
+    const updateData = {}; 
 
-    const hiringForm = await Hire.findByIdAndUpdate(id,
-      { $set: { title, fields } },
-      { new: true } // Return the updated document
-    ).exec();
-
-    if (!hiringForm) {
-      return res.status(404).json({ message: 'Hiring form not found' });
+    // Dynamically build the update object
+    if (req.body.title) {
+      updateData['title'] = req.body.title; 
     }
 
-    res.status(200).json(hiringForm);
+    if (req.body.fields) {
+      // Handle fields updates
+      for (const fieldKey in req.body.fields) {
+        updateData[`fields.${fieldKey}`] = req.body.fields[fieldKey];
+      }
+    }
+
+    // If there are any updates to be made
+    if (Object.keys(updateData).length > 0) {
+      const hiringForm = await Hire.findByIdAndUpdate(id,
+        { $set: updateData },
+        { new: true }
+      ).exec();
+
+      if (!hiringForm) {
+        return res.status(404).json({ message: 'Hiring form not found' });
+      }
+
+      res.status(200).json(hiringForm);
+    } else {
+      return res.status(400).json({ message: 'No updates provided' });
+    }
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Error updating hiring form' });
