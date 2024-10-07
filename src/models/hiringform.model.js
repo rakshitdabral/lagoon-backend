@@ -1,3 +1,4 @@
+import { type } from "express/lib/response";
 import mongoose, { Mongoose, Schema } from "mongoose";
 import { v4 as uuidv4 } from 'uuid';
 
@@ -110,12 +111,12 @@ const dynamicFields = new Schema({
 },{strict : false})
 
 const hiringformSchema = new Schema({
-  uniqueKey: {
-    type: String,
-    required: true,
-    unique: true,
-    default: () => uuidv4()
-  },
+  // uniqueKey: {
+  //   type: String,
+  //   required: true,
+  //   unique: true,
+  //   default: () => uuidv4()
+  // },
   
   title: {
     type : String,
@@ -126,6 +127,20 @@ const hiringformSchema = new Schema({
     enum: ['draft', 'published', 'trashed'],
     default: 'draft',
   },
+  description : {
+    type :String
+  },
+  salary : {
+    type : Number
+  },
+  mode : {
+    type : String,
+    enum : ["hybrid" , "work-from-home" , "in-office"]
+  },
+  nature : {
+    type : String
+  },
+
   // created_by:{
   //   type : mongoose.Schema.Types.ObjectId,
   //   ref : 'User',

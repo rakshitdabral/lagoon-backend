@@ -1,9 +1,11 @@
 import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
-
+import dotenv from 'dotenv';
 
 const app = express()
+
+dotenv.config();
 
 app.use(cors({
   origin : process.env.CORS_ORIGIN,
@@ -12,12 +14,12 @@ app.use(cors({
 
 
 app.use(express.json({
-  limit:"16kb"
+  limit:"32kb"
 }))
 
 app.use(express.urlencoded({
   extended : true,
-  limit : "16kb"
+  limit : "32kb"
 }))
 
 app.use(express.static("public"))
@@ -29,6 +31,10 @@ import hireRouter from './routes/hiringform.routes.js'
 
 //routes declaration
 app.use("/api/v1/hire", hireRouter)
+
+
+
+
 
 
 export {app}
