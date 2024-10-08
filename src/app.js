@@ -61,11 +61,12 @@ app.post(
 //routes import
 import hireRouter from './routes/hiringform.routes.js'
 import templateRouter from './routes/template.routes.js'
+import featureRouter from './routes/feature.routes.js'
 
 //routes declaration
 app.use("/api/v1/hire", hireRouter)
 app.use('/api/v1/template',templateRouter)
-
+app.use('/api/v1/feature',featureRouter)
 
 
 
