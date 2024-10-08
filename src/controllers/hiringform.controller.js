@@ -1,11 +1,33 @@
 // hiring.controller.js
 import { Hire } from '../models/hiringform.model.js';
+import { Template } from '../models/template.model.js';
+
+
+// export const createHiringForm = async (req, res) => {
+//   try {
+//     const { title, status,fields } = req.body;
+//     console.log(fields)
+//     const hiringForm = new Hire({ title, status,fields }); // Include dynamicFields
+//     await hiringForm.save();
+//     res.status(201).json({ message: 'Hiring form created successfully' });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: 'Error creating hiring form' });
+//   }
+// };
 
 export const createHiringForm = async (req, res) => {
   try {
-    const { title, status,fields } = req.body;
-    console.log(fields)
-    const hiringForm = new Hire({ title, status,fields }); // Include dynamicFields
+    const { title, templateId, fields } = req.body;
+    let template;
+    if (templateId) {
+      template = await Template.findById(templateId);
+      if (!template) {
+        throw new Error('Template not found');
+      }
+    }
+    const mergedFields = template ? [...template.fields, ...fields] : fields;
+    const hiringForm = new Hire({ title, template: templateId, fields: mergedFields });
     await hiringForm.save();
     res.status(201).json({ message: 'Hiring form created successfully' });
   } catch (error) {
@@ -83,11 +105,13 @@ export const updateHiringForm = async (req, res) => {
       updateData['title'] = req.body.title; 
     }
 
+    if(req.body.status){
+      updateData['status'] = req.body.status
+    }
+
     if (req.body.fields) {
-      // Handle fields updates
-      for (const fieldKey in req.body.fields) {
-        updateData[`fields.${fieldKey}`] = req.body.fields[fieldKey];
-      }
+      // Replace all fields with the new fields
+      updateData['fields'] = req.body.fields;
     }
 
     // If there are any updates to be made

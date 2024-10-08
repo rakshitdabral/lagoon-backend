@@ -1,5 +1,12 @@
 import mongoose, { Schema } from "mongoose";
-import { v4 as uuidv4 } from 'uuid';
+
+
+const templateAnalytic = new Schema({
+  counter : {
+    type : Number,
+    default : 0
+  }
+})
 
 const dynamicFields = new Schema({
   fields : [
@@ -108,46 +115,19 @@ const dynamicFields = new Schema({
   ]
 },{strict : false})
 
-const hiringformSchema = new Schema({
-  uniqueKey: {
-    type: String,
-    required: true,
-    unique: true,
-    default: () => uuidv4()
-  },
-  
-  title: {
+const templateSchema = new Schema({
+  templateName: {
     type : String,
     required : true,
     unique : false
-  },status: {
+  },description: {
     type: String,
-    enum: ['draft', 'published', 'trashed'],
-    default: 'draft',
   },
   description : {
     type :String
   },
-  salary : {
-    type : Number
-  },
-  mode : {
-    type : String,
-    enum : ["hybrid" , "work-from-home" , "in-office"]
-  },
-  nature : {
-    type : String
-  },
-  templateId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Template',
-  },
-  // created_by:{
-  //   type : mongoose.Schema.Types.ObjectId,
-  //   ref : 'User',
-  //   required : true
-  // },
+  usageCount  : templateAnalytic,
   fields: [dynamicFields],
 },{strict: false , timestamps: true})
 
-export const Hire = mongoose.model("Hire",hiringformSchema)
+export const Template = mongoose.model("Template",templateSchema)
