@@ -6,12 +6,12 @@ const userSchema = new Schema({
     type: String,
     required: true,
     unique: true,
-    default: () => uuidv4(), 
+    default: () => uuidv4(),
   },
   username: {
     type: String,
     unique: true,
-    sparse: true, // Keep this if you want to allow null values for username
+    sparse: true,  
   },
   email: {
     type: String,
@@ -31,22 +31,22 @@ const userSchema = new Schema({
   googleId: { 
     type: String,
     unique: true,
-    sparse: true, // Keep this if you want to allow null values for googleId
+    sparse: true,  
   },
   linkedinId: { 
     type: String,
     unique: true,
-    sparse: true, // Keep this if you want to allow null values for linkedinId
+    sparse: true,  
   },
   externalId: {  
     type: String,
     unique: true,
-    sparse: true, // Keep this if you want to allow null values for externalId
+    sparse: true,  
   },
   userId: { 
     type: String,
     required: true,
-    unique: true,
+    unique: true,  
   },
   formsCreated: [{ 
     type: mongoose.Schema.Types.ObjectId, 
