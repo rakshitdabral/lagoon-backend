@@ -4,9 +4,9 @@ import { getFormSettings, updateFormSettings } from '../controllers/form.setting
 const router = express.Router();
 
 // Update form settings
-router.put('/:formId', updateFormSettings);
+router.put('/:formId/formsettings', updateFormSettings);
 
 // Get form settings
-router.get('/:formId', getFormSettings);
+router.get('/:formId/formsettings', getFormSettings);
 
 export default router;
