@@ -1,12 +1,12 @@
 import express from 'express';
-import { updateFormSettings, getFormSettings } from '../controllers/form.settings.controller.js';
+import { getFormSettings, updateFormSettings } from '../controllers/form.settings.controller.js';
 
 const router = express.Router();
 
 // Update form settings
-router.put('/:formId/settings', updateFormSettings);
+router.put('/:formId', updateFormSettings);
 
 // Get form settings
-router.get('/:formId/settings', getFormSettings);
+router.get('/:formId', getFormSettings);
 
 export default router;
