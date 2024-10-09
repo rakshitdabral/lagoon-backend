@@ -18,7 +18,7 @@ import { Template } from '../models/template.model.js';
 
 export const createHiringForm = async (req, res) => {
   try {
-    const { title, templateId, fields } = req.body;
+    const { title, templateId, fields,settings } = req.body;
     let template;
     if (templateId) {
       template = await Template.findById(templateId);
@@ -27,7 +27,7 @@ export const createHiringForm = async (req, res) => {
       }
     }
     const mergedFields = template ? [...template.fields, ...fields] : fields;
-    const hiringForm = new Hire({ title, template: templateId, fields: mergedFields });
+    const hiringForm = new Hire({ title, template: templateId, fields: mergedFields, settings });
     await hiringForm.save();
     res.status(201).json({ message: 'Hiring form created successfully' });
   } catch (error) {
