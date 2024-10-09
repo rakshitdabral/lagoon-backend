@@ -107,6 +107,7 @@ const dynamicFields = new Schema({
     
   ]
 },{strict : false})
+
 const settingsSchema = new Schema({
   maxSubmissionsPerUser: {
     type: Number,
@@ -149,6 +150,7 @@ const settingsSchema = new Schema({
     default: false, // Toggle for sending email notifications
   },
 }, { _id: false });
+
 const hiringformSchema = new Schema({
   uniqueKey: {
     type: String,

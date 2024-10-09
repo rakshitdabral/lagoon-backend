@@ -20,21 +20,27 @@ export const updateFormSettings = async (req, res) => {
   }
 };
 
-// Fetch Settings for a form
 
+
+
+// Fetch Settings for a form
 export const getFormSettings = async (req, res) => {
 //   console.log(req)
-  try {
-    const formId = req.params.formId;
-    const form = await Hire.findById(formId);
-    console.log(form)
-    if (!form) {
-      return res.status(404).json({ message: "Form not found" });
-    }
-
-    // res.json({ settings: form.settings });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
+try {
+  const formId = req.params.formId;
+  const form = await Hire.findById(formId);
+  if (!form) {
+    return res.status(404).json({ message: "Form not found" });
   }
+
+  const settings = form.settings;
+  if (!settings) {
+    return res.status(404).json({ message: "Settings not found" });
+  }
+
+  res.json({ settings });
+} catch (error) {
+  console.error(error);
+  res.status(500).json({ message: "Server error" });
+}
 };
