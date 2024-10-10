@@ -6,7 +6,7 @@ const dynamicFields = new Schema({
     {
       question_type : {
         type : String,
-        default : "text"
+        default : "text",
       },
       regex : {
         type : String
@@ -111,7 +111,7 @@ const dynamicFields = new Schema({
 const settingsSchema = new Schema({
   maxSubmissionsPerUser: {
     type: Number,
-    default: null, // Maximum number of form submissions per user
+    default: 1, // Maximum number of form submissions per user
   },
   allowPartialResponses: {
     type: Boolean,
@@ -149,7 +149,7 @@ const settingsSchema = new Schema({
     type: Boolean,
     default: false, // Toggle for sending email notifications
   },
-}, { _id: false });
+}, { _id: false , default : true});
 
 const hiringformSchema = new Schema({
   uniqueKey: {
@@ -186,7 +186,7 @@ const hiringformSchema = new Schema({
     ref: 'Template',
   },
   fields: [dynamicFields],
-  settings: settingsSchema, // Add the settings sub-schema here
+  settings: {settingsSchema}, // Add the settings sub-schema here
 }, { strict: false, timestamps: true });
 
 export const Hire = mongoose.model("Hire",hiringformSchema)

@@ -18,7 +18,7 @@ import { Template } from '../models/template.model.js';
 
   export const createHiringForm = async (req, res) => {
     try {
-      const { title, templateId, fields,settings } = req.body;
+      const { title, templateId, fields } = req.body;
       let template;
       if (templateId) {
         template = await Template.findById(templateId);
@@ -27,7 +27,24 @@ import { Template } from '../models/template.model.js';
         }
       }
       const mergedFields = template ? [...template.fields, ...fields] : fields;
-      const hiringForm = new Hire({ title, template: templateId, fields: mergedFields, settings });
+      const defaultSettings = {
+        maxSubmissionsPerUser:  1,
+        allowPartialResponses: false,
+        limitTotalSubmissions: false,
+        totalSubmissionsLimit: null,
+        emailCopyToApplicant: false,
+        showProgressBar: false,
+        deadline: null,
+        exportToGoogleSheets: false,
+        closeForm: false,
+        sendEmailNotifications: false,
+      };
+      const hiringForm = new Hire({ 
+        title, 
+        template: templateId, 
+        fields: mergedFields, 
+        settings: defaultSettings 
+      });
       await hiringForm.save();
       res.status(201).json({ message: 'Hiring form created successfully' });
     } catch (error) {
