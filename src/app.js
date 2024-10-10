@@ -34,6 +34,7 @@ import templateRouter from './routes/template.routes.js';
 import featureRouter from './routes/feature.routes.js';
 import webhookRoutes from './routes/webhook.router.js';
 import settingsRouter from './routes/form.settings.routes.js';  
+import awsRouter from './routes/awsuploader.routes.js'
 
 // Routes declaration
 app.use(webhookRoutes);
@@ -41,5 +42,6 @@ app.use('/api/v1/hire', hireRouter);
 app.use('/api/v1/template', templateRouter);
 app.use('/api/v1/feature', featureRouter);
 app.use('/api/v1/settings', settingsRouter);  
+app.use('/api/v1/upload' , awsRouter)
 
 export { app };
