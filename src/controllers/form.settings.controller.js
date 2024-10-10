@@ -3,7 +3,8 @@ import { Hire } from '../models/hiringform.model.js';
 // Update Settings for a form
 export const updateFormSettings = async (req, res) => {
   const { formId } = req.params;
-  const { settings } = req.body;
+  const settings  = req.body;
+  // console.log(settings)
 
   try {
     const form = await Hire.findByIdAndUpdate(
