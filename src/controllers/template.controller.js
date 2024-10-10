@@ -56,3 +56,54 @@ export const deleteTemplateById = async (req, res) => {
     res.status(500).json({ message: 'Error deleting template' });
   }
 };
+
+export const getTemplates = async (req, res) => {
+  try {
+    const { 
+      templateName, 
+      sortBy, 
+      orderBy, 
+      limit, 
+      page 
+    } = req.query;
+
+    const query = {};
+
+    if (templateName) {
+      query.templateName = { $regex: templateName, $options: 'i' };
+    }
+
+    let sort = {};
+    if (sortBy && orderBy) {
+      sort[sortBy] = orderBy === 'asc' ? 1 : -1;
+    } else {
+      sort.createdAt = -1; // default sorting by creation date in descending order
+    }
+
+    const limitNumber = parseInt(limit) || 10;
+    const pageNumber = parseInt(page) || 1;
+    const skip = (pageNumber - 1) * limitNumber;
+
+    const templates = await Template.find(query)
+      .sort(sort)
+      .skip(skip)
+      .limit(limitNumber)
+      .exec();
+
+    const totalTemplates = await Template.countDocuments(query).exec();
+    const totalPages = Math.ceil(totalTemplates / limitNumber);
+
+    res.status(200).json({
+      templates,
+      pagination: {
+        totalTemplates,
+        totalPages,
+        currentPage: pageNumber,
+        limit: limitNumber,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error fetching templates' });
+  }
+};

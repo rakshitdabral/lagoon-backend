@@ -10,14 +10,66 @@ export const reqFeature = async (req,res) =>{
   }
 }
 
-export const getLatestFeature = async (req,res) =>{
+export const getFeatures = async (req, res) => {
   try {
-    const features = await Feature.find().sort({ createdAt: -1 });
-    res.send(features);
-  } catch (err) {
-    res.status(500).send({ error: 'Failed to retrieve feature requests' });
+    const { 
+      headline, 
+      sections,
+      urgency,
+      sortBy, 
+      orderBy, 
+      limit, 
+      page 
+    } = req.query;
+
+    const query = {};
+
+    if (headline) {
+      query.headline = { $regex: headline, $options: 'i' };
+    }
+
+    if(sections){
+      query.sections = {$regex: sections , $options : 'i'}
+    }
+
+    if(urgency){
+      query.urgency = {$regex : urgency , $options : 'i'}
+    }
+
+    let sort = {};
+    if (sortBy && orderBy) {
+      sort[sortBy] = orderBy === 'asc' ? 1 : -1;
+    } else {
+      sort.createdAt = -1; // default sorting by creation date in descending order
+    }
+
+    const limitNumber = parseInt(limit) || 10;
+    const pageNumber = parseInt(page) || 1;
+    const skip = (pageNumber - 1) * limitNumber;
+
+    const features = await Feature.find(query)
+      .sort(sort)
+      .skip(skip)
+      .limit(limitNumber)
+      .exec();
+
+    const totalFeatures = await Feature.countDocuments(query).exec();
+    const totalPages = Math.ceil(totalFeatures / limitNumber);
+
+    res.status(200).json({
+      features,
+      pagination: {
+        totalFeatures,
+        totalPages,
+        currentPage: pageNumber,
+        limit: limitNumber,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error fetching features' });
   }
-}
+};
 
 export const getFeatureById = async (req,res)=>{
   try {

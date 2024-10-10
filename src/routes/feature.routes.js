@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { deleteFeature, getFeatureById, getLatestFeature, reqFeature, updateFeature, upvoteFeature } from "../controllers/feature.controller.js";
+import { deleteFeature, getFeatureById, getFeatures, reqFeature, updateFeature, upvoteFeature } from "../controllers/feature.controller.js";
 
 const router = Router()
 
@@ -7,7 +7,7 @@ const router = Router()
 router.post('/feature-req', reqFeature);
 
 //get latest feature request
-router.get('/feature-req/latest',getLatestFeature)
+router.get('/feature-req',getFeatures)
 
 //get feature by id
 router.get('/feature-req/:id',getFeatureById)
